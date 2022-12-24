@@ -110,7 +110,7 @@ const taskDownloadGithub = async (options, basePath, deployerCtx) => {
     if (options.ref) {
         reference = options.ref;
     } else {
-        if (options.private == true) {
+        if (options.privateRepo == true) {
             const data = await got.get(`https://api.github.com/repos/${repoOwner}/${repoName}?access_token=${accessToken}`, { timeout: 15e3 }).json();
         }
         else{
@@ -124,7 +124,7 @@ const taskDownloadGithub = async (options, basePath, deployerCtx) => {
     deployerCtx.$step = 'ref set';
 
     //Preparing vars
-    if (options.private == true) {
+    if (options.privateRepo == true) {
         const downURL = `https://api.github.com/repos/${repoOwner}/${repoName}/zipball/${reference}?access_token=${accessToken}`;
     }
     else{
