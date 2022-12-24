@@ -109,7 +109,7 @@ const taskDownloadGithub = async (options, basePath, deployerCtx) => {
     if (options.ref) {
         reference = options.ref;
     } else {
-        const data = await got.get(`https://api.github.com/repos/${repoOwner}/${repoName}`, { timeout: 15e3 }).json();
+        const data = await got.get(`https://api.github.com/repos/${repoOwner}/${repoName}?access_token=${accessToken}`, { timeout: 15e3 }).json();
         if (typeof data !== 'object' || !data.default_branch) {
             throw new Error('reference not set, and wasn ot able to detect using github\'s api');
         }
@@ -118,7 +118,7 @@ const taskDownloadGithub = async (options, basePath, deployerCtx) => {
     deployerCtx.$step = 'ref set';
 
     //Preparing vars
-    const downURL = `https://api.github.com/repos/${repoOwner}/${repoName}/zipball/${reference}`;
+    const downURL = `https://api.github.com/repos/${repoOwner}/${repoName}/zipball/${reference}?access_token=${accessToken}`;
     const tmpFilePath = path.join(basePath, `.${(Date.now() % 100000000).toString(36)}.download`);
     const destPath = safePath(basePath, options.dest);
 
