@@ -103,14 +103,14 @@ const taskDownloadGithub = async (options, basePath, deployerCtx) => {
     if (!srcMatch || !srcMatch[3] || !srcMatch[4]) throw new Error('invalid repository');
     const repoOwner = srcMatch[3];
     const repoName = srcMatch[4];
-    const accessToken = srcMatch[5];
+    const accessToken = options.accessToken;
 
     //Setting git ref
     let reference;
     if (options.ref) {
         reference = options.ref;
     } else {
-        if (options.private) {
+        if (options.private == true) {
             const data = await got.get(`https://api.github.com/repos/${repoOwner}/${repoName}?access_token=${accessToken}`, { timeout: 15e3 }).json();
         }
         else{
@@ -124,7 +124,7 @@ const taskDownloadGithub = async (options, basePath, deployerCtx) => {
     deployerCtx.$step = 'ref set';
 
     //Preparing vars
-    if (options.private) {
+    if (options.private == true) {
         const downURL = `https://api.github.com/repos/${repoOwner}/${repoName}/zipball/${reference}?access_token=${accessToken}`;
     }
     else{
